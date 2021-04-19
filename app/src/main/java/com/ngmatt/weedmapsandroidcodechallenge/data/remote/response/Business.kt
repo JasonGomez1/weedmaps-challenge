@@ -14,10 +14,11 @@ data class Business(
     val name: String? = null,
     val url: String? = null,
     val coordinates: Coordinates? = null,
-    val imageUrl: String? = null,
     val location: Location? = null,
     val distance: Double? = null,
     val transactions: List<String>? = null,
+    @Json(name = "image_url")
+    val imageUrl: String? = null,
     @Json(name = "review_count")
     val reviewCount: Int? = null,
     @Json(name = "is_closed")

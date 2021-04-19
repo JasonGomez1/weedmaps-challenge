@@ -1,43 +1,19 @@
 package com.ngmatt.weedmapsandroidcodechallenge.utils
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.ngmatt.weedmapsandroidcodechallenge.R
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.function.Consumer
 import kotlin.coroutines.resume
-
-/*@SuppressLint("MissingPermission")
-fun Context.locationSharedFlow() = callbackFlow {
-    val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-    val locationListener = LocationListener { location ->
-        try {
-            offer(location)
-        } catch (e: Throwable) {
-            // Handle when channel is closed
-        }
-    }
-
-    locationManager.requestLocationUpdates(
-        LocationManager.GPS_PROVIDER,
-        3000,
-        4000f,
-        locationListener,
-        Looper.getMainLooper()
-    )
-
-    awaitClose {
-        locationManager.removeUpdates(locationListener)
-    }
-}.shareIn(
-    ProcessLifecycleOwner
-        .get()
-        .lifecycleScope,
-    replay = 1,
-    started = SharingStarted.WhileSubscribed()
-)*/
 
 @SuppressLint("MissingPermission")
 suspend fun Context.awaitLastLocation() = suspendCancellableCoroutine<Location> { continuation ->
@@ -51,4 +27,56 @@ suspend fun Context.awaitLastLocation() = suspendCancellableCoroutine<Location> 
         ContextCompat.getMainExecutor(applicationContext),
         locationConsumer
     )
+}
+
+fun AppCompatActivity.checkLocationPermission(block: () -> Unit) {
+    val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                block()
+            } else {
+                val dialog = AlertDialog.Builder(this).apply {
+                    setNeutralButton(R.string.ok) { _, _ ->
+
+                    }
+                    setMessage("Your location is needed to display the closest businesses for your search")
+                }.create()
+                dialog.show()
+            }
+        }
+
+    when {
+        ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED -> {
+            block()
+        }
+        shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
+            val dialog = AlertDialog.Builder(this).apply {
+                setPositiveButton(
+                    R.string.ok
+                ) { _, _ ->
+                    requestPermissionLauncher.launch(
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    )
+                }
+                setNegativeButton(
+                    R.string.no_thanks
+                ) { _, _ ->
+                    // Handle negative response here
+                }
+                setMessage("Your location is needed to display the closest businesses for your search")
+                setTitle("Requesting location permission")
+            }.create()
+            dialog.show()
+        }
+        else -> {
+            requestPermissionLauncher.launch(
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        }
+    }
 }

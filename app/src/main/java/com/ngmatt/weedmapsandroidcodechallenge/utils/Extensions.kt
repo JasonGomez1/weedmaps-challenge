@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Criteria
 import android.location.Location
 import android.location.LocationManager
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,15 +19,21 @@ import kotlin.coroutines.resume
 @SuppressLint("MissingPermission")
 suspend fun Context.awaitLastLocation() = suspendCancellableCoroutine<Location> { continuation ->
     val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    val criteria = Criteria().apply {
+        accuracy = Criteria.ACCURACY_FINE
+    }
+    val provider = locationManager.getBestProvider(criteria, true)
     val locationConsumer = Consumer<Location> { location ->
         continuation.resume(location)
     }
-    locationManager.getCurrentLocation(
-        LocationManager.GPS_PROVIDER,
-        null,
-        ContextCompat.getMainExecutor(applicationContext),
-        locationConsumer
-    )
+    provider?.let {
+        locationManager.getCurrentLocation(
+            it,
+            null,
+            ContextCompat.getMainExecutor(applicationContext),
+            locationConsumer
+        )
+    }
 }
 
 fun AppCompatActivity.checkLocationPermission(block: () -> Unit) {
@@ -41,7 +48,9 @@ fun AppCompatActivity.checkLocationPermission(block: () -> Unit) {
                     setNeutralButton(R.string.ok) { _, _ ->
 
                     }
-                    setMessage("Your location is needed to display the closest businesses for your search")
+                    setMessage(
+                        "Your location is needed to display the closest businesses for your search"
+                    )
                 }.create()
                 dialog.show()
             }
@@ -68,7 +77,9 @@ fun AppCompatActivity.checkLocationPermission(block: () -> Unit) {
                 ) { _, _ ->
                     // Handle negative response here
                 }
-                setMessage("Your location is needed to display the closest businesses for your search")
+                setMessage(
+                    "Your location is needed to display the closest businesses for your search"
+                )
                 setTitle("Requesting location permission")
             }.create()
             dialog.show()

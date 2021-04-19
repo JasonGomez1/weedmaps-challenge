@@ -40,11 +40,6 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${Versions.app_compat}"
     implementation "com.google.dagger:hilt-android:${Versions.hilt_version}"
     kapt "com.google.dagger:hilt-compiler:${Versions.hilt_version}"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
-    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
-    implementation "androidx.fragment:fragment-ktx:1.3.2"
-    implementation 'com.google.android.material:material:1.3.0'
     implementation "androidx.core:core-ktx:${Versions.kotlin_ext}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlin_coroutines}"
     implementation "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
@@ -62,14 +57,14 @@ dependencies {
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.kotlin_coroutines}"
     androidTestImplementation "androidx.test.ext:junit:${Versions.android_junit}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${Versions.espresso}"
-    //Mockk
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
+    implementation "androidx.fragment:fragment-ktx:1.3.2"
+    implementation 'com.google.android.material:material:1.3.0'
     testImplementation "io.mockk:mockk:1.10.2"
-
-    // AndroidX testing
     testImplementation 'androidx.test:core-ktx:1.3.0'
     testImplementation "androidx.arch.core:core-testing:2.1.0"
-
-    // Truth
     testImplementation "com.google.truth:truth:1.1"
 
 }

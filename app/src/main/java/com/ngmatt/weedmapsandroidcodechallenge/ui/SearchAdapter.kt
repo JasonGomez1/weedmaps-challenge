@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.ngmatt.weedmapsandroidcodechallenge.databinding.SearchItemBinding
 
-class SearchAdapter : ListAdapter<SearchAndReview, SearchViewHolder>(SearchDiffUtil()) {
+class SearchAdapter : ListAdapter<SearchAndTopReview, SearchViewHolder>(SearchDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         SearchViewHolder(
             SearchItemBinding.inflate(

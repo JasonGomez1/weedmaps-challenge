@@ -4,18 +4,19 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.ngmatt.weedmapsandroidcodechallenge.R
 import com.ngmatt.weedmapsandroidcodechallenge.databinding.SearchItemBinding
 
 class SearchViewHolder(
     private val binding: SearchItemBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(search: SearchAndReview) {
+    fun bind(searchTop: SearchAndTopReview) {
         binding.apply {
-            val (business, topReview) = search
+            val (business, topReview) = searchTop
             tvName.text = business.name
             tvRating.text = business.rating?.toString()
-            tvTopReview.text = topReview?.text
+            tvTopReview.text = root.context.getString(R.string.top_review, topReview?.text)
 
             val progressDrawable = CircularProgressDrawable(binding.root.context)
             progressDrawable.strokeWidth = 5f

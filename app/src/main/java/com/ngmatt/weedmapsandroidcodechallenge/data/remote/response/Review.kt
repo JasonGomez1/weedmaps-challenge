@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Review(
     var id: String? = null,
-    var rating: Int? = null,
+    var rating: Int,
     var user: User? = null,
     var text: String? = null,
     var url: String? = null,

@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">WeedmapsAndroidCodeChallenge</string>
     <string name="search_banner">Showing results for %1$s</string>
-    <string name="name">Name</string>
+    <string name="name">Name </string>
     <string name="rating">Rating</string>
-    <string name="top_review">Top Rated Review: </string>
+    <string name="top_review">Top Rated Review: %1$s</string>
     <string name="ok">OK</string>
     <string name="no_thanks">No thanks</string>
+    <string name="search_failed">Failed to load search</string>
 </resources>

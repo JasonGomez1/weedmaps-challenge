@@ -8,7 +8,7 @@ data class Business(
     val rating: Double? = null,
     val price: String? = null,
     val phone: String? = null,
-    val id: String? = null,
+    val id: String,
     val alias: String? = null,
     val categories: List<Category>? = null,
     val name: String? = null,

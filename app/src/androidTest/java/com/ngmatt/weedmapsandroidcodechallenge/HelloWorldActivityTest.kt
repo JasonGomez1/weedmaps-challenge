@@ -17,24 +17,24 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 @UninstallModules(NetworkModule::class)
 class HelloWorldActivityTest {
 
-    @Rule
+    @get:Rule
     val hiltAndroidRule = HiltAndroidRule(this)
 
     @BindValue
     @JvmField
-    val mockWebServerService: YelpService = run {
+    val mockWebServerService: YelpService =
         Retrofit.Builder()
             .baseUrl("http://127.0.0.1:8080/")
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(YelpService::class.java)
-    }
 
     lateinit var server: MockWebServer
 
     @Before
     fun setUp() {
         hiltAndroidRule.inject()
+        server = MockWebServer()
         server.start(8080)
     }
 

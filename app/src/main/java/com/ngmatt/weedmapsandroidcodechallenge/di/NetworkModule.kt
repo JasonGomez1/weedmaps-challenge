@@ -18,18 +18,20 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideYelpService(): YelpService {
-        val client = OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            })
-            .build()
-
-        return Retrofit.Builder()
+    fun provideYelpService(client: OkHttpClient): YelpService =
+        Retrofit.Builder()
             .baseUrl(Endpoints.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create())
             .client(client)
             .build()
             .create(YelpService::class.java)
-    }
+
+    @Singleton
+    @Provides
+    fun provideOkHttpClient(): OkHttpClient =
+        OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
+            .build()
 }
